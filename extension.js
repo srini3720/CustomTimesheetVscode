@@ -15,13 +15,28 @@ let Gitlabtoken;
  */
 function activate(context) {
 
+	const config = vscode.workspace.getConfiguration('timesheet');
+	Gitlabtoken = config.get('personalAccessToken');
+	
+	let setToken = vscode.commands.registerCommand("timesheet.setGitlabToken",function() {
+		vscode.window.showInputBox({
+			prompt: 'Enter your GitLab personal access token:',
+			password: true
+		}).then((input) => {
+			if (input) {
+				// Store the personal access token in the extension settings
+				config.update('personalAccessToken', input, true);
+				Gitlabtoken = input;
+				vscode.window.showInformationMessage('Gitlab personal Token had Set :)');
+			} else {
+				vscode.window.showErrorMessage('No personal access token entered. The Timesheet extension will not work without a personal access token.');
+			}
+		});
+	})
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "timesheet" is now active!');
-	    // Check if the personal access token has been set
-		const config = vscode.workspace.getConfiguration('timesheet');
-		Gitlabtoken = config.get('personalAccessToken');
-	
+
 		if (!Gitlabtoken) {
 			// Prompt the user to enter their personal access token
 			vscode.window.showInputBox({
@@ -32,6 +47,7 @@ function activate(context) {
 					// Store the personal access token in the extension settings
 					config.update('personalAccessToken', input, true);
 					Gitlabtoken = input;
+					vscode.window.showInformationMessage('Gitlab personal Token had Set :)');
 				} else {
 					vscode.window.showErrorMessage('No personal access token entered. The Timesheet extension will not work without a personal access token.');
 				}
@@ -97,9 +113,10 @@ function activate(context) {
 			console.log(`Error adding time entry: ${error.message}`)
             vscode.window.showErrorMessage(`Error adding time entry: ${error.message}`);
         }
-		vscode.window.showInformationMessage('Hello World from Timesheet!');
+		
 	});
 
+	context.subscriptions.push(setToken)
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(addTimeEntryCommand);
 }

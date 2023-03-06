@@ -20,6 +20,10 @@
       {
         "command": "timesheet.addTimeEntry",
         "title": "Add a Timesheet"
+      },
+      {
+        "command": "timesheet.setGitlabToken",
+        "title": "Set Gitlab Personnal Token"
       }
     ]
   },
