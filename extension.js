@@ -83,12 +83,11 @@ function activate(context) {
             // Get the time spent from the user
             const timeSpent = await vscode.window.showInputBox({ prompt: 'Enter the time spent (in Hour)' });
 
-			
             if (!timeSpent) {
                 // User cancelled the input box
                 return;
             }
-
+			const summary = await vscode.window.showInputBox({ prompt: 'Enter the Summary for the time Entry' });
             // Construct the URL for the time entries API
             const apiUrl = `https://gitlab.com/api/v4/projects/${projectId}/issues/${issueId}/add_spent_time`;
 
@@ -98,7 +97,8 @@ function activate(context) {
 
             // Make the API call to add the time entry
             const response = await axios.post(apiUrl, {
-                duration: timeSpent
+                duration: timeSpent,
+				summary:summary
             }, {
                 headers: {
 					'PRIVATE-TOKEN': Gitlabtoken,
