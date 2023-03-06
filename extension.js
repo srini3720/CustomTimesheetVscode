@@ -20,7 +20,7 @@ function activate(context) {
 	
 	let setToken = vscode.commands.registerCommand("timesheet.setGitlabToken",function() {
 		vscode.window.showInputBox({
-			prompt: 'Enter your GitLab personal access token:',
+			prompt: 'Enter your GitLab personal access token Will be required only Once :)',
 			password: true
 		}).then((input) => {
 			if (input) {
@@ -40,7 +40,7 @@ function activate(context) {
 		if (!Gitlabtoken) {
 			// Prompt the user to enter their personal access token
 			vscode.window.showInputBox({
-				prompt: 'Enter your GitLab personal access token:',
+				prompt: 'Enter your GitLab personal access token Will be required only Once :)',
 				password: true
 			}).then((input) => {
 				if (input) {
